@@ -92,7 +92,7 @@ function api.fetch_async_get(handle) end
 --
 -- Only works at init time and must be called from the mod's main scope (not from a function).
 --
--- Function only exists if core server was built with cURL support.
+-- Function only exists if Luanti server was built with cURL support.
 --
 -- **DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED TABLE, STORE IT IN A LOCAL VARIABLE!**
 ---@return mt.HTTPApiTable

@@ -30,6 +30,11 @@ function core.is_player(obj) end
 ---@nodiscard
 function core.player_exists(name) end
 
+---Whether the given name could be used as a player name (regardless of whether said player exists).
+---@param name string
+---@return boolean
+function core.is_valid_player_name(name) end
+
 ---Replaces definition of a builtin hud element.
 ---@param name '"breath"'|'"health"'
 ---@param hud_definition mt.HUDDef
@@ -99,7 +104,9 @@ function core.get_name_from_content_id(content_id) end
 ---
 ---On success returns a table, a string, a number, a boolean or `nullvalue`.
 ---
----On failure outputs an error message and returns `nil`.
+---On failure: If `return_error` is not set or is `false`,
+---outputs an error message and returns `nil`.
+---Otherwise returns `nil, err` (error message).
 ---
 ---Example: `parse_json("[10, {\"a\":false}]")`, returns `{10, {a = false}}`.
 ---@param string string
@@ -366,3 +373,20 @@ function core.request_insecure_environment() end
 ---@return boolean
 ---@nodiscard
 function core.global_exists(name) end
+
+---Register a metatable that should be preserved when Lua data is transferred
+---between environments (via IPC or `handle_async`).
+---
+---`name` is a string that identifies the metatable. It is recommended to
+---follow the `modname:name` convention for this identifier.
+---
+---`mt` is the metatable to register.
+---
+---Note that the same metatable can be registered under multiple names,
+---but multiple metatables must not be registered under the same name.
+---
+---You must register the metatable in both the main environment
+---and the async environment for this mechanism to work.
+---@param name string
+---@param mt table
+function core.register_portable_metatable(name, mt) end

@@ -58,18 +58,32 @@ dynamic_add_media_options.to_player = nil
 ---@type boolean
 dynamic_add_media_options.ephemeral = nil
 
----Pushes the specified media file to client(s).
+--- Pushes the specified media file to client(s).
+--- 
+--- The file must be a supported image, sound or model format.
+--- Dynamically added media is not persisted between server restarts.
+--- 
+--- Returns `false` on error, `true` if the request was accepted.
+--- 
+--- The given callback will be called for every player as soon as the media is available on the client.
 ---
----The file must be a supported image, sound or model format.
+--- Details/Notes:
+--- * If `ephemeral`=false and `to_player` is unset the file is added to the media
+---   sent to clients on startup, this means the media will appear even on
+---   old clients if they rejoin the server.
+--- * If `ephemeral`=false the file must not be modified, deleted, moved or
+---   renamed after calling this function.
+--- * Regardless of any use of `ephemeral`, adding media files with the same
+---   name twice is not possible/guaranteed to work. An exception to this is the
+---   use of `to_player` to send the same, already existent file to multiple
+---   chosen players.
+--- * You can also call this at startup time. In that case `callback` MUST
+---   be `nil` and you cannot use `ephemeral` or `to_player`, as these logically
+---   do not make sense.
 ---
----Returns `false` on error, `true` if the request was accepted.
----
----The given callback will be called for every player as soon as the media is available on the client.
----Details/Notes:
----* If `ephemeral`=false and `to_player` is unset the file is added to the media sent to clients on startup, this means the media will appear even on old clients if they rejoin the server.
----* If `ephemeral`=false the file must not be modified, deleted, moved or renamed after calling this function.
----* Regardless of any use of `ephemeral`, adding media files with the same name twice is not possible/guaranteed to work. An exception to this is the use of `to_player` to send the same, already existent file to multiple chosen players.
----* Clients will attempt to fetch files added this way via remote media, this can make transfer of bigger files painless (if set up). Nevertheless it is advised not to use dynamic media for big media files.
+--- Clients will attempt to fetch files added this way via remote media,
+--- this can make transfer of bigger files painless (if set up). Nevertheless
+--- it is advised not to use dynamic media for big media files.
 ---@param options dynamic_add_media_options
 ---@param callback fun(name: string)
 ---@return boolean

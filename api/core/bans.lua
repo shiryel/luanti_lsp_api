@@ -23,20 +23,23 @@ function core.ban_player(name) end
 function core.unban_player_or_ip(ip_or_name) end
 
 ---Disconnect a player with an optional reason.
+---If `reconnect` is true, allow the user to reconnect.
 ---
 ---Returns boolean indicating success (false if player nonexistant).
 ---@param name string
 ---@param reason string|nil
+---@param reconnect boolean|nil
 ---@return boolean
-function core.kick_player(name, reason) end
+function core.kick_player(name, reason, reconnect) end
 
 ---Disconnect a player with an optional reason,
 ---this will not prefix with `Kicked:` like `kick_player`.
 ---
 ---If no reason is given, it will default to `Disconnected`.
+---If `reconnect` is true, allow the user to reconnect.
 ---
 ---Returns boolean indicating success (false if player nonexistant).
 ---@param name string
 ---@param reason? string
 ---@return boolean
-function core.disconnect_player(name, reason) end
+function core.disconnect_player(name, reason, reconnect) end
