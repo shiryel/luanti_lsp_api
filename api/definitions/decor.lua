@@ -16,7 +16,7 @@
 -- structures, such as trees, cave spikes, rocks, and so on.
 ---|"schematic"
 
--- Used by `minetest.register_decoration`.
+-- Used by `core.register_decoration`.
 ---@alias mt.DecorDef mt.DecorDefSimple|mt.DecorDefSchematic
 
 ---@class mt.DecorDefCommon

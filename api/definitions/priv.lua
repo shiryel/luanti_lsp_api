@@ -2,7 +2,7 @@
 ---Privilege definition
 -----------------------
 
--- Used by `minetest.register_privilege`.
+-- Used by `core.register_privilege`.
 ---@class mt.PrivDef
 ---@field description string|nil Privilege description.
 -- Whether to grant the privilege to singleplayer.

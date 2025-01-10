@@ -7,9 +7,9 @@
 -- corresponding Lua entity using the given registration fields.
 -- Player properties need to be saved manually.
 ---@class mt.ObjectProp
--- For players only. Defaults to `minetest.PLAYER_MAX_HP_DEFAULT`.
+-- For players only. Defaults to `core.PLAYER_MAX_HP_DEFAULT`.
 ---@field hp_max integer
--- For players only. Defaults to `minetest.PLAYER_MAX_BREATH_DEFAULT`.
+-- For players only. Defaults to `core.PLAYER_MAX_BREATH_DEFAULT`.
 ---@field breath_max integer
 -- For players only. Zoom FOV in degrees.
 -- Note that zoom loads and/or generates world beyond the server's
@@ -50,7 +50,7 @@
 --   Otherwise for non-node items, the object will be an extrusion of
 --   'inventory_image'.
 --   If 'itemname' contains a ColorString or palette index (e.g. from
---   `minetest.itemstring_with_palette()`), the entity will inherit the color.
+--   `core.itemstring_with_palette()`), the entity will inherit the color.
 --   Wielditems are scaled a bit. If you want a wielditem to appear
 --   to be as large as a node, use `0.667` in `visual_size`.
 ---@field visual "cube"|"sprite"|"upright_sprite"|"mesh"|"item"|"wielditem"

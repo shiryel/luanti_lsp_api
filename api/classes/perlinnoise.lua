@@ -6,7 +6,7 @@
 ---@class mt.PerlinNoiseParams
 
 -- A perlin noise generator. It can be created via `PerlinNoise()` or
--- `minetest.get_perlin()`. For `minetest.get_perlin()`, the actual seed used is
+-- `core.get_perlin()`. For `core.get_perlin()`, the actual seed used is
 -- the noiseparams seed plus the world seed, to create world-specific noise.
 ---@class mt.PerlinNoise
 -- Returns 2D noise value at `pos={x=,y=}`.
@@ -22,12 +22,12 @@ function PerlinNoise(noiseparams) end
 ---@overload fun(seeddiff, octaves, persistence, spread):mt.PerlinNoise Deprecated.
 ---@param noiseparams mt.PerlinNoiseParams
 ---@return mt.PerlinNoise
-function minetest.get_perlin(noiseparams) end
+function core.get_perlin(noiseparams) end
 
 -- A fast, bulk perlin noise generator.
 --
 -- It can be created via `PerlinNoiseMap(noiseparams, size)` or
--- `minetest.get_perlin_map(noiseparams, size)`. For `minetest.get_perlin_map()`,
+-- `core.get_perlin_map(noiseparams, size)`. For `core.get_perlin_map()`,
 -- the actual seed used is the noiseparams seed plus the world seed, to create
 -- world-specific noise.
 ---@class mt.PerlinNoiseMap
@@ -109,4 +109,4 @@ function PerlinNoiseMap(noiseparams, size, buffer) end
 -- instead of creating a new table.
 ---@param buffer mt.PerlinNoiseMap|nil
 ---@return mt.PerlinNoiseMap
-function minetest.get_perlin_map(noiseparams, size, buffer) end
+function core.get_perlin_map(noiseparams, size, buffer) end

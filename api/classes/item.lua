@@ -48,8 +48,8 @@
 --     stack:get_meta():set_string("description", "My worn out pick")
 --     local itemstring = stack:to_string()
 --
--- Additionally the methods `minetest.itemstring_with_palette(item, palette_index)`
--- and `minetest.itemstring_with_color(item, colorstring)` may be used to create
+-- Additionally the methods `core.itemstring_with_palette(item, palette_index)`
+-- and `core.itemstring_with_color(item, colorstring)` may be used to create
 -- item strings encoding color information in their metadata.
 ---@alias mt.ItemString string
 

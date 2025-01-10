@@ -13,7 +13,7 @@
 ---
 ---The definition of a node is stored and can be accessed by using
 ---
----    minetest.registered_nodes[node.name]
+---    core.registered_nodes[node.name]
 ---
 ---Nodes are passed by value between Lua and the engine.
 ---They are represented by a table:
@@ -73,7 +73,7 @@ local node = {}
 ---* Used by `drawtype = "flowingliquid"` and `liquidtype = "flowing"`
 ---* The liquid level and a flag of the liquid are stored in `param2`
 ---* Bits 0-2: Liquid level (0-7). The higher, the more liquid is in this node;
----  see `minetest.get_node_level`, `minetest.set_node_level` and `minetest.add_node_level`
+---  see `core.get_node_level`, `core.set_node_level` and `core.add_node_level`
 ---  to access/manipulate the content of this field
 ---* Bit 3: If set, liquid is flowing downwards (no graphical effect)
 ---|"flowingliquid"
@@ -81,7 +81,7 @@ local node = {}
 ---  "plantlike_rooted", "normal", "nodebox", "mesh"
 ---* The rotation of the node is stored in `param2`
 ---* Node is 'mounted'/facing towards one of 6 directions
----* You can make this value by using `minetest.dir_to_wallmounted()`
+---* You can make this value by using `core.dir_to_wallmounted()`
 ---* Values range 0 - 5
 ---* The value denotes at which direction the node is "mounted":
 ---  `0 = y+,   1 = y-,   2 = x+,   3 = x-,   4 = z+,   5 = z-`
@@ -91,7 +91,7 @@ local node = {}
 ---* Supported drawtypes: "normal", "nodebox", "mesh"
 ---* The rotation of the node is stored in `param2`.
 ---* Node is rotated around face and axis; 24 rotations in total.
----* Can be made by using `minetest.dir_to_facedir()`.
+---* Can be made by using `core.dir_to_facedir()`.
 ---* Chests and furnaces can be rotated that way, and also 'flipped'
 ---* Values range 0 - 23
 ---* facedir / 4 = axis direction:
@@ -108,7 +108,7 @@ local node = {}
 ---* Supported drawtypes: "normal", "nodebox", "mesh"
 ---* The rotation of the node is stored in `param2`.
 ---* Allows node to be rotated horizontally, 4 rotations in total
----* Can be made by using `minetest.dir_to_fourdir()`.
+---* Can be made by using `core.dir_to_fourdir()`.
 ---* Chests and furnaces can be rotated that way, but not flipped
 ---* Values range 0 - 3
 ---* 4dir modulo 4 = rotation

@@ -2,8 +2,8 @@
 ---Item definition
 ------------------
 
--- Used by `minetest.register_node`, `minetest.register_craftitem`, and
--- `minetest.register_tool`.
+-- Used by `core.register_node`, `core.register_craftitem`, and
+-- `core.register_tool`.
 ---@class mt.ItemDef
 ---@field name string|nil
 ---@field type string|nil
@@ -57,9 +57,9 @@
 ---* **When used for nodes:** Defines amount of light emitted by node.
 ---* **Otherwise:** Defines texture glow when viewed as a dropped item
 ---
----To set the maximum (`14`), use the value `minetest.LIGHT_MAX`.
+---To set the maximum (`14`), use the value `core.LIGHT_MAX`.
 ---
----A value outside the range `0` to `minetest.LIGHT_MAX` causes undefined behavior.
+---A value outside the range `0` to `core.LIGHT_MAX` causes undefined behavior.
 ---
 ---Default: `0`
 ---@field light_source integer|nil
@@ -91,7 +91,7 @@
 ---All fields in this table are optional.
 ---
 ---* `breaks`: When tool breaks due to wear. Ignored for non-tools.
----* `eat`: When item is eaten with `minetest.do_item_eat`.
+---* `eat`: When item is eaten with `core.do_item_eat`.
 ---@field sound {breaks: mt.SimpleSoundSpec, eat: mt.SimpleSoundSpec}|nil
 ---When the `place` key was pressed with the item in hand and a node was pointed at.
 ---
@@ -99,7 +99,7 @@
 ---
 ---The placer may be any `ObjectRef` or `nil`.
 ---
----default: `minetest.item_place`
+---default: `core.item_place`
 ---@field on_place nil|fun(itemstack: mt.ItemStack, placer?: mt.ObjectRef, pointed_thing: mt.PointedThing): mt.ItemStack?
 ---Same as `on_place` but called when not pointing at a node.
 ---
@@ -114,13 +114,13 @@
 -- Shall pick-up the item and return the leftover itemstack or nil to not
 -- modify the dropped item.
 --
--- default: `minetest.item_pickup`
+-- default: `core.item_pickup`
 ---@field on_pickup nil|fun(itemstack: mt.ItemStack, picker?: mt.ObjectRef, pointed_thing?: mt.PointedThing, time_from_last_punch?: number, ...?: any): mt.ItemStack?
 ---Shall drop item and return the leftover `itemstack`.
 ---
 ---The dropper may be any `ObjectRef` or `nil`.
 ---
----default: `minetest.item_drop`
+---default: `core.item_drop`
 ---@field on_drop nil|fun(itemstack: mt.ItemStack, dropper?: mt.ObjectRef, pos: mt.Vector): mt.ItemStack?
 ---When user pressed the `punch/mine` key with the item in hand.
 ---

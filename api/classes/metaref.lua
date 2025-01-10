@@ -92,7 +92,7 @@ Some of the values in the key-value store are handled specially:
 Example:
 
 ```lua
-local meta = minetest.get_meta(pos)
+local meta = core.get_meta(pos)
 meta:set_string("formspec",
   "size[8,9]"..
   "list[context;main;0,0;8,4;]"..
@@ -222,7 +222,7 @@ local StorageRef = {}
 ---
 ---Must be called during mod load time.
 ---@return mt.StorageRef
-function minetest.get_mod_storage() end
+function core.get_mod_storage() end
 
 -------------------
 -- PlayerMetaRef --

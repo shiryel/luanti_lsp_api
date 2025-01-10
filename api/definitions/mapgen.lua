@@ -14,16 +14,16 @@ logged.
 It is important to note that VoxelManip is designed for speed, and *not* ease
 of use or flexibility. If your mod requires a map manipulation facility that
 will handle 100% of all edge cases, or the use of high level node placement
-features, perhaps `minetest.set_node()` is better suited for the job.
+features, perhaps `core.set_node()` is better suited for the job.
 
 In addition, VoxelManip might not be faster, or could even be slower, for your
 specific use case. VoxelManip is most effective when setting large areas of map
 at once - for example, if only setting a 3x3x3 node area, a
-`minetest.set_node()` loop may be more optimal. Always profile code using both
+`core.set_node()` loop may be more optimal. Always profile code using both
 methods of map manipulation to determine which is most appropriate for your
 usage.
 
-A recent simple test of setting cubic areas showed that `minetest.set_node()`
+A recent simple test of setting cubic areas showed that `core.set_node()`
 is faster than a VoxelManip for a 3x3x3 node cube or smaller.
 ]]
 ---@class mt.VoxelManip
@@ -41,7 +41,7 @@ function VoxelManip:read_from_map(p1, p2) end
 ---@param light boolean|nil `true` by default
 ---* If `light` is true, then lighting is automatically recalculated.
 ---* If `light` is false, no light calculations happen, and you should correct
----all modified blocks with `minetest.fix_light()` as soon as possible.
+---all modified blocks with `core.fix_light()` as soon as possible.
 ---
 ---Keep in mind that modifying the map where light is incorrect can cause
 ---more lighting bugs.
@@ -72,7 +72,7 @@ function VoxelManip:update_map() end
 
 ---Set the lighting within the `VoxelManip` to a uniform value.
 ---To be used only by a `VoxelManip` object from
----`minetest.get_mapgen_object`.
+---`core.get_mapgen_object`.
 ---@param light {day: integer, night: integer}
 ---@param p1 mt.Vector
 ---@param p2 mt.Vector
@@ -110,7 +110,7 @@ function VoxelManip:set_param2_data(param2_data) end
 ---@param p2? mt.Vector
 ---@param propagate_shadow boolean
 ---* To be used only by a `VoxelManip` object from
----  `minetest.get_mapgen_object`.
+---  `core.get_mapgen_object`.
 ---* (`p1`, `p2`) is the area in which lighting is set, defaults to the whole
 ---  area if left out or nil. For almost all uses these should be left out
 ---  or nil to use the default.
@@ -124,7 +124,7 @@ function VoxelManip:update_liquids() end
 
 ---Returns `true` if the data in the voxel manipulator
 ---had been modified since the last read from map, due to a call to
----`minetest.set_data()` on the loaded area elsewhere.
+---`core.set_data()` on the loaded area elsewhere.
 ---@return boolean
 function VoxelManip:was_modified() end
 
@@ -244,7 +244,7 @@ VoxelArea.zstride = nil
 ---A table mapping requested generation notification types to arrays of
 ---positions at which the corresponding generated structures are located within
 ---the current chunk. To enable the capture of positions of interest to be recorded
----call `minetest.set_gen_notify()` first.
+---call `core.set_gen_notify()` first.
 ---@field dungeon mt.Vector[] bottom center position of dungeon rooms
 ---@field temple mt.Vector[] bottom center position of desert temples (mgv6 only)
 ---@field cave_begin mt.Vector[]
@@ -253,7 +253,7 @@ VoxelArea.zstride = nil
 ---@field large_cave_end mt.Vector[]
 ---@field [string] mt.Vector[] key format is `"decoration#id"` (see below)
 ---Decorations keys are in format `"decoration#id"`, where `id` is the
----numeric unique decoration ID as returned by `minetest.get_decoration_id()`.
+---numeric unique decoration ID as returned by `core.get_decoration_id()`.
 ---For example, `"decoration#123"`.
 
 ---@alias mt.MapgenObject mt.VoxelManip|mt.GenNotify|table

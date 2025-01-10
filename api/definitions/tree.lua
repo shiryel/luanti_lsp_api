@@ -21,7 +21,7 @@ Spawn a small apple tree:
         fruit_chance=10,
         fruit="default:apple"
     }
-    minetest.spawn_tree(pos,apple_tree)
+    core.spawn_tree(pos,apple_tree)
 ]]
 ---@class mt.TreeDef
 ---@field axiom mt.TreeAxioms Initial tree axiom.

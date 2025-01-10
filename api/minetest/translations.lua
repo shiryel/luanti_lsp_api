@@ -2,21 +2,21 @@
 ---Translations
 ---------------
 
--- A simple wrapper around `minetest.translate`.
+-- A simple wrapper around `core.translate`.
 --
--- It is equivalent to `minetest.translate(textdomain, str, ...)`.
+-- It is equivalent to `core.translate(textdomain, str, ...)`.
 --
 -- It is intended to be used in the following way, so that it avoids verbose
--- repetitions of `minetest.translate`:
+-- repetitions of `core.translate`:
 --
 -- ```lua
--- local S = minetest.get_translator(textdomain)
+-- local S = core.get_translator(textdomain)
 -- S(str, ...)
 -- ```
 ---@param textdomain string
 ---@return mt.Translator
 ---@nodiscard
-function minetest.get_translator(textdomain) end
+function core.get_translator(textdomain) end
 
 -- Translates strings with the given `textdomain` for disambiguation.
 --
@@ -29,10 +29,10 @@ function minetest.get_translator(textdomain) end
 --   implemented, the original translation string **must** have its arguments in
 --   increasing order, without gaps or repetitions, starting from 1.
 -- - `@=` acts as a literal `=`. It is not required in strings given to
---   `minetest.translate`, but is in translation files to avoid being confused with
+--   `core.translate`, but is in translation files to avoid being confused with
 --   the `=` separating the original from the translation.
 -- - `@\n` (where the `\n` is a literal newline) acts as a literal newline. As with
---   `@=`, this escape is not required in strings given to `minetest.translate`,
+--   `@=`, this escape is not required in strings given to `core.translate`,
 --   but is in translation files.
 -- - `@n` acts as a literal newline as well.
 --
@@ -44,12 +44,12 @@ function minetest.get_translator(textdomain) end
 -- given a number of arguments equal to the number of arguments the translated
 -- string expects. Arguments are literal strings -- they will not be translated,
 -- so if you want them to be, they need to come as outputs of
--- `minetest.translate` as well.
+-- `core.translate` as well.
 --
 -- For instance, suppose we want to translate "@1 Wool" with "@1" being replaced
 -- by the translation of "Red". We can do the following:
 --
---       local S = minetest.get_translator()
+--       local S = core.get_translator()
 --       S("@1 Wool", S("Red"))
 --
 -- This will be displayed as "Red Wool" on old clients and on clients that do not
@@ -66,7 +66,7 @@ function minetest.get_translator(textdomain) end
 ---@param ... string
 ---@return string
 ---@nodiscard
-function minetest.translate(textdomain, ...) end
+function core.translate(textdomain, ...) end
 
 ---@alias mt.LangCode
 ---| "be"
@@ -121,13 +121,13 @@ On some specific cases, server translation could be useful. For example, filter
 a list on labels and send results to client. A method is supplied to achieve
 that:
 
-`minetest.get_translated_string(lang_code, string)`: Resolves translations in
+`core.get_translated_string(lang_code, string)`: Resolves translations in
 the given string just like the client would, using the translation files for
 `lang_code`. For this to have any effect, the string needs to contain translation
-markup, e.g. `minetest.get_translated_string("fr", S("Hello"))`.
+markup, e.g. `core.get_translated_string("fr", S("Hello"))`.
 
 The `lang_code` to use for a given player can be retrieved from the table
-returned by `minetest.get_player_information(name)`.
+returned by `core.get_player_information(name)`.
 
 IMPORTANT: This functionality should only be used for sorting, filtering or
 similar purposes. You do not need to use this to get translated strings to show
@@ -137,4 +137,4 @@ up on the client.
 ---@param string string
 ---@return string
 ---@nodiscard
-function minetest.get_translated_string(lang_code, string) end
+function core.get_translated_string(lang_code, string) end

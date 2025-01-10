@@ -1,12 +1,12 @@
 ---@meta
 
----Minetest 5.7 [2a1bc8](https://github.com/minetest/minetest/blob/2a1bc8/doc/lua_api.txt) API
+---Minetest 5.10 [568f7a8](https://github.com/minetest/minetest/blob/568f7a8e8fb457c7b7bcfd3211c7f3f0481ed2e7/doc/lua_api.md) API
 ---
----* [Official site](http://www.minetest.net)
----* [Developer Wiki](http://dev.minetest.net)
----* [Unofficial Modding Book](https://rubenwardy.com/minetest_modding_book)
+---* [Official site](https://www.luanti.org/)
+---* [Developer Wiki](https://dev.luanti.org/)
+---* [Unofficial Modding Book](https://rubenwardy.com/minetest_modding_book/)
 ---@class mt.Core
-minetest = {
+core = {
   CONTENT_AIR = 126,
   CONTENT_IGNORE = 127,
   CONTENT_UNKNOWN = 125,

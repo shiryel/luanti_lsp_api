@@ -4,7 +4,7 @@
 
 -- Returns the currently loading mod's name, when loading a mod.
 ---@return string
-function minetest.get_current_modname() end
+function core.get_current_modname() end
 
 -- * Returns the directory path for a mod,
 --   e.g. `"/home/user/.minetest/usermods/modname"`.
@@ -14,26 +14,26 @@ function minetest.get_current_modname() end
 --   or checking if a mod is enabled.
 ---@param modname string
 ---@return string
-function minetest.get_modpath(modname) end
+function core.get_modpath(modname) end
 
 -- * Returns a list of enabled mods, sorted alphabetically.
 -- * Does not include disabled mods, even if they are installed.
 ---@return string[]
-function minetest.get_modnames() end
+function core.get_modnames() end
 
 -- * Returns a table containing information about the
 --   current game. Note that other meta information (e.g. version/release number)
 --   can be manually read from `game.conf` in the game's root directory.
 ---@return {id: string, title: string, author: string, path: string}
-function minetest.get_game_info() end
+function core.get_game_info() end
 
 -- * Returns e.g. `"/home/user/.minetest/world"`
 -- * Useful for storing custom data
 ---@return string
-function minetest.get_worldpath() end
+function core.get_worldpath() end
 
 ---@return boolean
-function minetest.is_singleplayer() end
+function core.is_singleplayer() end
 
 -- Table containing API feature flags.
 ---@class mt.Feature
@@ -64,7 +64,7 @@ function minetest.is_singleplayer() end
 ---@field formspec_version_element boolean
 -- Whether AreaStore's IDs are kept on save/load (5.1.0).
 ---@field area_store_persistent_ids boolean
--- Whether minetest.find_path is functional (5.2.0).
+-- Whether core.find_path is functional (5.2.0).
 ---@field pathfinder_works boolean
 -- Whether Collision info is available to an objects' on_step (5.3.0).
 ---@field object_step_has_moveresult boolean
@@ -100,11 +100,11 @@ function minetest.is_singleplayer() end
 -- liquid_fluidity, liquid_fluidity_smooth, liquid_sink,
 -- acceleration_default, acceleration_air (5.8.0)
 ---@field physics_overrides_v2 boolean
-minetest.features = {}
+core.features = {}
 
 ---@param arg string | table<mt.Feature, boolean>
 ---@return boolean, table<mt.Feature, boolean> missing
-function minetest.has_feature(arg) end
+function core.has_feature(arg) end
 
 -- Table containing information about a player.
 ---@class mt.PlayerInfo
@@ -129,7 +129,7 @@ function minetest.has_feature(arg) end
 
 ---@param player_name string
 ---@return mt.PlayerInfo
-function minetest.get_player_information(player_name) end
+function core.get_player_information(player_name) end
 
 --- Will only be present if the client sent this information (requires v5.7+)
 ---
@@ -163,13 +163,13 @@ function minetest.get_player_information(player_name) end
 --- Note that none of these things are constant, they are likely to change during a client
 --- connection as the player resizes the window and moves it between monitors
 ---@return mt.PlayerWindowInfo
-function minetest.get_player_window_information(player_name) end
+function core.get_player_window_information(player_name) end
 
 -- Creates a directory specified by `path`, creating parent directories
 -- if they don't exist.
 ---@param path string
 ---@return boolean success
-function minetest.mkdir(path) end
+function core.mkdir(path) end
 
 -- Removes a directory specified by `path`.
 -- If `recursive` is set to `true`, the directory is recursively removed.
@@ -177,21 +177,21 @@ function minetest.mkdir(path) end
 ---@param path string
 ---@param recursive boolean
 ---@return boolean success
-function minetest.rmdir(path, recursive) end
+function core.rmdir(path, recursive) end
 
 -- Copies a directory specified by `path` to `destination`
 -- Any files in `destination` will be overwritten if they already exist.
 ---@param path string
 ---@param destination string
 ---@return boolean success
-function minetest.cpdir(path, destination) end
+function core.cpdir(path, destination) end
 
 -- Moves a directory specified by `path` to `destination`.
 -- If the `destination` is a non-empty directory, then the move will fail.
 ---@param path string
 ---@param destination string
 ---@return boolean success
-function minetest.mvdir(path, destination) end
+function core.mvdir(path, destination) end
 
 -- Returns list of entry names.
 ---@param path string
@@ -200,7 +200,7 @@ function minetest.mvdir(path, destination) end
 -- * false: return only file names.
 ---@param is_dir boolean|nil
 ---@return string[]
-function minetest.get_dir_list(path, is_dir) end
+function core.get_dir_list(path, is_dir) end
 
 -- Replaces contents of file at path with new contents in a safe (atomic)
 -- way. Use this instead of below code when writing e.g. database files:
@@ -208,11 +208,11 @@ function minetest.get_dir_list(path, is_dir) end
 ---@param path string
 ---@param content string
 ---@return boolean success
-function minetest.safe_file_write(path, content) end
+function core.safe_file_write(path, content) end
 
 -- Returns a table containing components of the engine version.
 ---@return mt.EngineVersion
-function minetest.get_version() end
+function core.get_version() end
 
 ---@class mt.EngineVersion
 ---@field project string Name of the project, eg, "Minetest".
@@ -227,25 +227,25 @@ function minetest.get_version() end
 -- reliable or verifiable. Compatible forks will have a different name and
 -- version entirely. To check for the presence of engine features, test
 -- whether the functions exported by the wanted features exist. For example:
--- `if minetest.check_for_falling then ... end`.
+-- `if core.check_for_falling then ... end`.
 ---@field is_dev boolean
 
 -- Returns the sha1 hash of data.
 ---@param data string
 ---@param raw boolean|nil `false` return raw bytes instead of hex digits
 ---@return string
-function minetest.sha1(data, raw) end
+function core.sha1(data, raw) end
 
 -- Converts a ColorSpec to a ColorString.
 -- If the ColorSpec is invalid, returns `nil`.
 ---@param colorspec mt.ColorSpec
 ---@return mt.ColorString|nil
-function minetest.colorspec_to_colorstring(colorspec) end
+function core.colorspec_to_colorstring(colorspec) end
 
 -- Converts a ColorSpec to a raw string of four bytes in an RGBA layout.
 ---@param colorspec mt.ColorSpec
 ---@return string
-function minetest.colorspec_to_bytes(colorspec) end
+function core.colorspec_to_bytes(colorspec) end
 
 -- Encode a PNG image and return it in string form.
 ---@param width integer
@@ -262,10 +262,10 @@ function minetest.colorspec_to_bytes(colorspec) end
 -- You may use this to procedurally generate textures during server init.
 ---@param data mt.ColorSpec[]|string
 ---@param compression integer|nil Optional zlib compression level from 0 to 9.
-function minetest.encode_png(width, height, data, compression) end
+function core.encode_png(width, height, data, compression) end
 
 --- Encodes non-unreserved URI characters by a
 --- percent sign followed by two hex digits. See
 --- [RFC 3986, section 2.3](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3).
 ---@param str string
-function minetest.urlencode(str) end
+function core.urlencode(str) end

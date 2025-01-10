@@ -24,7 +24,7 @@
 ---|"place_center_z" Placement of this decoration is centered along the Z axis.
 ---|"force_placement" Schematic nodes other than "ignore" will replace existing nodes.
 
--- Used in `minetest.create_schematic`.
+-- Used in `core.create_schematic`.
 --
 -- - If there are two or more entries with the same `pos` value, the last entry
 --   is used.
@@ -39,7 +39,7 @@
 -- per-node force-place.
 ---@field prob integer
 
--- Used in `minetest.create_schematic`.
+-- Used in `core.create_schematic`.
 --
 -- - If slice probability list equals `nil`, no slice probabilities are applied.
 ---@class mt.SchematicSliceProbability
@@ -57,7 +57,7 @@
 ---|"mts" A string containing the binary MTS data used in the MTS file format.
 ---|"lua" A string containing Lua code representing the schematic in table format.
 
--- Used in `minetest.serialize_schematic`.
+-- Used in `core.serialize_schematic`.
 ---@class mt.SchematicSerializeOptions
 -- If `lua_use_comments` is true and `format` is "lua", the Lua code
 -- generated will have (X, Z) position comments for every X row generated in
@@ -68,7 +68,7 @@
 -- of a tab character.
 ---@field lua_num_indent_spaces number
 
--- Used in `minetest.read_schematic`.
+-- Used in `core.read_schematic`.
 ---@class mt.SchematicReadOptions
 -- - `none`: no `write_yslice_prob` table is inserted,
 -- - `low`: only probabilities that are not 254 or 255 are written in the

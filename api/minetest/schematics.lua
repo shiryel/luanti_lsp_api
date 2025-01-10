@@ -15,7 +15,7 @@
 ---@param probability_list mt.SchematicProbability[]
 ---@param filename string
 ---@param slice_prob_list mt.SchematicSliceProbability[]|nil
-function minetest.create_schematic(p1, p2, probability_list, filename, slice_prob_list) end
+function core.create_schematic(p1, p2, probability_list, filename, slice_prob_list) end
 
 -- Place the schematic specified by schematic at `pos`.
 --
@@ -32,17 +32,17 @@ function minetest.create_schematic(p1, p2, probability_list, filename, slice_pro
 ---@param replacements {[string]: string}|nil
 ---@param force_placement boolean|nil Nodes other than `air` and `ignore` are replaced by the schematic.
 ---@param flags {place_center_x:boolean, place_center_y:boolean, place_center_z:boolean}|nil
-function minetest.place_schematic(pos, schematic, rotation, replacements, force_placement, flags) end
+function core.place_schematic(pos, schematic, rotation, replacements, force_placement, flags) end
 
 -- Return the serialized schematic specified by schematic.
 ---@param schematic mt.SchematicSpec
 ---@param format mt.SchematicFormat
 ---@param options mt.SchematicSerializeOptions
 ---@return string
-function minetest.serialize_schematic(schematic, format, options) end
+function core.serialize_schematic(schematic, format, options) end
 
 -- Returns a Lua table representing the schematic.
 ---@param schematic mt.SchematicSpec
 ---@param options mt.SchematicReadOptions
 ---@return  mt.SchematicSpec
-function minetest.read_schematic(schematic, options) end
+function core.read_schematic(schematic, options) end

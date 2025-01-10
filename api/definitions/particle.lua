@@ -2,7 +2,7 @@
 ---Particle definition
 ----------------------
 
--- Used by `minetest.add_particle`.
+-- Used by `core.add_particle`.
 ---@class mt.ParticleDef
 ---@field pos mt.Vector
 ---@field velocity mt.Vector
@@ -48,7 +48,7 @@
 ---ParticleSpawner definition
 -------------------------------
 
--- Used by `minetest.add_particlespawner`.
+-- Used by `core.add_particlespawner`.
 --
 -- The particles' properties are random values between the min and max values.
 -- Applies to: pos, velocity, acceleration, expirationtime, size.

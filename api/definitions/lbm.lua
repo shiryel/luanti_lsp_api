@@ -2,7 +2,7 @@
 ---LBM (LoadingBlockModifier) definition
 ----------------------------------------
 
--- Used by `minetest.register_lbm`.
+-- Used by `core.register_lbm`.
 --
 -- A loading block modifier (LBM) is used to define a function that is called for
 -- specific nodes (defined by `nodenames`) when a mapblock which contains such nodes

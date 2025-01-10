@@ -1,6 +1,6 @@
 ---@meta
 
--- Used by `minetest.register_biome`.
+-- Used by `core.register_biome`.
 --
 -- The maximum number of biomes that can be used is 65535. However, using an
 -- excessive number of biomes will slow down map generation. Depending on

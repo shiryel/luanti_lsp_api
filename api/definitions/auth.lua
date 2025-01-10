@@ -2,7 +2,7 @@
 ---Authentication handler definition
 ------------------------------------
 
--- Used by `minetest.register_authentication_handler`.
+-- Used by `core.register_authentication_handler`.
 ---@class mt.AuthHandlerDef
 local auth = {}
 

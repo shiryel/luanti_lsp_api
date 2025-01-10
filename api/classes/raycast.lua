@@ -15,7 +15,7 @@ The map is loaded as the ray advances. If the map is modified after the
 `Raycast` is created, the changes may or may not have an effect on the object.
 
 It can be created via `Raycast(pos1, pos2, objects, liquids)` or
-`minetest.raycast(pos1, pos2, objects, liquids)` where:
+`core.raycast(pos1, pos2, objects, liquids)` where:
 
 - `pos1`: start of the ray
 - `pos2`: end of the ray
@@ -33,7 +33,7 @@ local RaycastClass
 ---@return mt.Raycast
 function Raycast(pos1, pos2, objects, liquids) end
 
-minetest.raycast = Raycast
+core.raycast = Raycast
 
 -- Returns a `pointed_thing` with exact pointing location
 -- - Returns the next thing pointed by the ray or `nil`.

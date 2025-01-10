@@ -2,7 +2,7 @@
 ---Detached inventory callbacks
 -------------------------------
 
--- Used by `minetest.create_detached_inventory`.
+-- Used by `core.create_detached_inventory`.
 ---@class mt.DetachedInvDef
 local did = {}
 

@@ -12,12 +12,12 @@
 
 ---@param level mt.LogLevel
 ---@param text string
-function minetest.log(level, text) end
+function core.log(level, text) end
 
 ---@param text string
 ---Log level `"none"`.
-function minetest.log(text) end
+function core.log(text) end
 
----Equivalent to `minetest.log(table.concat({...}, "\t"))`.
----@see minetest.log
-function minetest.debug(...) end
+---Equivalent to `core.log(table.concat({...}, "\t"))`.
+---@see core.log
+function core.debug(...) end

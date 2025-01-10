@@ -2,7 +2,7 @@
 ---Entity definition
 --------------------
 
--- Used by `minetest.register_entity`.
+-- Used by `core.register_entity`.
 --
 -- You can define arbitrary member variables here by using a '_' prefix:
 --
@@ -24,8 +24,8 @@ function entity:on_activate(staticdata, dtime) end
 -- Called when the object is about to get removed or unloaded.
 --
 -- - Note that this won't be called if the object hasn't been activated in the
---   first place. In particular, `minetest.clear_objects({mode = "full"})` won't
---   call this, whereas `minetest.clear_objects({mode = "quick"})` might call
+--   first place. In particular, `core.clear_objects({mode = "full"})` won't
+--   call this, whereas `core.clear_objects({mode = "quick"})` might call
 --   this.
 ---@param removal boolean Indicating whether the object is about to get removed.
 function entity:on_deactivate(removal) end

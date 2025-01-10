@@ -2,7 +2,7 @@
 ---ABM (ActiveBlockModifier) definition
 ---------------------------------------
 
----Used by `minetest.register_abm`.
+---Used by `core.register_abm`.
 ---@class mt.ABMDef
 -- Descriptive label for profiling purposes (optional).
 -- Definitions with identical labels will be listed as one.

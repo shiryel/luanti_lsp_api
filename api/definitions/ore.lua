@@ -2,7 +2,7 @@
 ---Ore definition
 -----------------
 
--- Used by `minetest.register_ore`.
+-- Used by `core.register_ore`.
 ---@class mt.OreDef
 ---@field ore_type mt.OreType
 ---@field ore string

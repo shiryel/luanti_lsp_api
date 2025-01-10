@@ -24,7 +24,7 @@ request.method = nil
 ---@type string|table
 request.data = nil
 
--- Optional, if specified replaces the default minetest user agent with given string.
+-- Optional, if specified replaces the default core user agent with given string.
 ---@type string
 request.user_agent = nil
 
@@ -92,8 +92,8 @@ function api.fetch_async_get(handle) end
 --
 -- Only works at init time and must be called from the mod's main scope (not from a function).
 --
--- Function only exists if minetest server was built with cURL support.
+-- Function only exists if core server was built with cURL support.
 --
 -- **DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED TABLE, STORE IT IN A LOCAL VARIABLE!**
 ---@return mt.HTTPApiTable
-function minetest.request_http_api() end
+function core.request_http_api() end

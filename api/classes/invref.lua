@@ -96,7 +96,7 @@ function InvRef:contains_item(listname, stack, match_meta) end
 ---@return mt.ItemStack
 function InvRef:remove_item(listname, stack) end
 
----* Returns a location compatible to `minetest.get_inventory(location)`.
+---* Returns a location compatible to `core.get_inventory(location)`.
 ---* Returns `{type="undefined"}` in case location is not known.
 ---@return mt.InvLocation
 function InvRef:get_location() end

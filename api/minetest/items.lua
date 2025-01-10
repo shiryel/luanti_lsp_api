@@ -8,7 +8,7 @@
 ---@param img2 string
 ---@param img3 string
 ---@return string
-function minetest.inventorycube(img1, img2, img3) end
+function core.inventorycube(img1, img2, img3) end
 
 -- Returns the position of a `pointed_thing` or `nil` if the `pointed_thing`
 -- does not refer to a node or entity.
@@ -18,7 +18,7 @@ function minetest.inventorycube(img1, img2, img3) end
 ---@param pointed_thing mt.PointedThing
 ---@param above boolean|nil
 ---@return mt.Vector
-function minetest.get_pointed_thing_position(pointed_thing, above) end
+function core.get_pointed_thing_position(pointed_thing, above) end
 
 -- Convert a vector to a facedir value,
 -- used in `param2` for `paramtype2="facedir"`.
@@ -28,49 +28,49 @@ function minetest.get_pointed_thing_position(pointed_thing, above) end
 ---@param dir mt.Vector
 ---@param is6d boolean|nil
 ---@return mt.NodeParam
-function minetest.dir_to_facedir(dir, is6d) end
+function core.dir_to_facedir(dir, is6d) end
 
 -- Convert a facedir back into a vector aimed directly out the "back" of a node.
 ---@param facedir mt.NodeParam
 ---@return mt.Vector
-function minetest.facedir_to_dir(facedir) end
+function core.facedir_to_dir(facedir) end
 
 -- Convert a vector to a 4dir value, used in `param2` for `paramtype2="4dir"`.
 ---@param dir mt.Vector
 ---@return string
-function minetest.dir_to_fourdir(dir) end
+function core.dir_to_fourdir(dir) end
 
 -- Convert a 4dir back into a vector aimed directly out the "back" of a node.
 ---@param fourdir string
 ---@return mt.Vector
-function minetest.fourdir_to_dir(fourdir) end
+function core.fourdir_to_dir(fourdir) end
 
 -- Convert a vector to a wallmounted value, used for `paramtype2="wallmounted"`.
 ---@param dir mt.Vector
 ---@return mt.NodeParam
-function minetest.dir_to_wallmounted(dir) end
+function core.dir_to_wallmounted(dir) end
 
 -- Convert a wallmounted value back into a vector
 -- aimed directly out the "back" of a node.
 ---@param wallmounted mt.ParamType2
 ---@return mt.Vector
-function minetest.wallmounted_to_dir(wallmounted) end
+function core.wallmounted_to_dir(wallmounted) end
 
 -- Convert a vector into a yaw (angle).
 ---@param dir mt.Vector
 ---@return number
-function minetest.dir_to_yaw(dir) end
+function core.dir_to_yaw(dir) end
 
 -- Convert yaw (angle) to a vector.
 ---@param yaw number
 ---@return  mt.Vector
-function minetest.yaw_to_dir(yaw) end
+function core.yaw_to_dir(yaw) end
 
 -- Returns a boolean. Returns `true` if the given `paramtype2` contains
 -- color information (`color`, `colorwallmounted`, `colorfacedir`, etc.).
 ---@param ptype mt.ParamType2
 ---@return boolean
-function minetest.is_colored_paramtype(ptype) end
+function core.is_colored_paramtype(ptype) end
 
 -- Removes everything but the color information from the given `param2` value.
 --
@@ -78,22 +78,22 @@ function minetest.is_colored_paramtype(ptype) end
 ---@param param2 mt.NodeParam
 ---@param paramtype2 mt.ParamType2
 ---@return mt.NodeParam|nil
-function minetest.strip_param2_color(param2, paramtype2) end
+function core.strip_param2_color(param2, paramtype2) end
 
 -- Returns list of itemstrings that are dropped by `node` when dug
 -- with the item `toolname` (not limited to tools).
 ---@param node mt.Node|string Node as table or node name.
 ---@param toolname string|nil Name of the item used to dig.
 ---@return mt.ItemString[]
-function minetest.get_node_drops(node, toolname) end
+function core.get_node_drops(node, toolname) end
 
--- Used in `minetest.get_craft_result` and `minetest.get_craft_recipe`.
+-- Used in `core.get_craft_result` and `core.get_craft_recipe`.
 ---@class mt.CraftInput
 ---@field method "normal"|"cooking"|"fuel"
 ---@field width number|nil
 ---@field items mt.Item[]
 
--- Used in `minetest.get_craft_result`.
+-- Used in `core.get_craft_result`.
 ---@class mt.CraftOutput
 ---@field item mt.ItemStack Can be empty.
 ---@field time number
@@ -102,12 +102,12 @@ function minetest.get_node_drops(node, toolname) end
 ---@param input mt.CraftInput
 ---@return mt.CraftOutput output
 ---@return mt.CraftInput decremented_input
-function minetest.get_craft_result(input) end
+function core.get_craft_result(input) end
 
 -- Returns last registered recipe for output item (node).
 ---@param output mt.Node|mt.ItemString
 ---@return mt.CraftInput
-function minetest.get_craft_recipe(output) end
+function core.get_craft_recipe(output) end
 
 -- Example result for `"default:gold_ingot"` with two recipes:
 --
@@ -128,7 +128,7 @@ function minetest.get_craft_recipe(output) end
 
 ---@param item mt.Node
 ---@return mt.AllCraftRecipes|nil
-function minetest.get_all_craft_recipes(item) end
+function core.get_all_craft_recipes(item) end
 
 -- Handles drops from nodes after digging:
 -- Default action is to put them into digger's inventory.
@@ -138,7 +138,7 @@ function minetest.get_all_craft_recipes(item) end
 ---@param pos mt.Vector
 ---@param drops mt.ItemString[]
 ---@param digger mt.ObjectRef
-function minetest.handle_node_drops(pos, drops, digger) end
+function core.handle_node_drops(pos, drops, digger) end
 
 -- Creates an item string which contains palette index information
 -- for hardware colorization. You can use the returned string
@@ -146,7 +146,7 @@ function minetest.handle_node_drops(pos, drops, digger) end
 ---@param item mt.Item
 ---@param palette_index integer Added to the item stack.
 ---@return mt.ItemString
-function minetest.itemstring_with_palette(item, palette_index) end
+function core.itemstring_with_palette(item, palette_index) end
 
 -- Creates an item string which contains static color information
 -- for hardware colorization. Use this method if you wish to colorize
@@ -155,7 +155,7 @@ function minetest.itemstring_with_palette(item, palette_index) end
 ---@param item mt.Item
 ---@param colorstring mt.ColorString The new color of the item stack.
 ---@return mt.ItemString
-function minetest.itemstring_with_color(item, colorstring) end
+function core.itemstring_with_color(item, colorstring) end
 
 ---Defaults for the `on_place`, `on_drop`, `on_punch` and `on_dig`
 ------------------------------------------------------------------
@@ -172,7 +172,7 @@ function minetest.itemstring_with_color(item, colorstring) end
 ---@param param2 mt.NodeParam|nil Overrides `facedir` and wallmounted `param2`.
 ---@param prevent_after_place boolean|nil
 ---@return mt.ItemStack, mt.Vector|nil position
-function minetest.item_place_node(
+function core.item_place_node(
   itemstack,
   placer,
   pointed_thing,
@@ -189,11 +189,11 @@ end
 ---@param pointed_thing mt.PointedThing
 ---@return mt.ItemStack leftover
 ---@deprecated
-function minetest.item_place_object(itemstack, placer, pointed_thing) end
+function core.item_place_object(itemstack, placer, pointed_thing) end
 
 -- Default `on_place` callback for items.
 --
--- Wrapper that calls `minetest.item_place_node` if appropriate.
+-- Wrapper that calls `core.item_place_node` if appropriate.
 -- Calls `on_rightclick` of `pointed_thing.under` if defined instead.
 --
 -- **Note**: is not called when wielded item overrides `on_place`.
@@ -202,9 +202,9 @@ function minetest.item_place_object(itemstack, placer, pointed_thing) end
 ---@param pointed_thing mt.PointedThing
 ---@param param2 mt.NodeParam|nil Overrides facedir and wallmounted `param2`.
 ---@return mt.ItemStack, mt.Vector|nil position
-function minetest.item_place(itemstack, placer, pointed_thing, param2) end
+function core.item_place(itemstack, placer, pointed_thing, param2) end
 
--- Runs callbacks registered by `minetest.register_on_item_pickup` and adds
+-- Runs callbacks registered by `core.register_on_item_pickup` and adds
 -- the item to the picker's `"main"` inventory list.
 --
 -- * Parameters are the same as in `on_pickup`.
@@ -214,7 +214,7 @@ function minetest.item_place(itemstack, placer, pointed_thing, param2) end
 ---@param time_from_last_punch number
 ---@param ... any
 ---@return mt.ItemStack leftover
-function minetest.item_pickup(
+function core.item_pickup(
   itemstack,
   picker,
   pointed_thing,
@@ -230,7 +230,7 @@ end
 ---@param dropper mt.ObjectRef|nil
 ---@param pos mt.Vector
 ---@return mt.ItemStack leftover
-function minetest.item_drop(itemstack, dropper, pos) end
+function core.item_drop(itemstack, dropper, pos) end
 
 -- Default `on_eat` callback.
 --
@@ -238,26 +238,26 @@ function minetest.item_drop(itemstack, dropper, pos) end
 --   the player is eating a stack and `replace_with_item` doesn't fit onto
 --   the eaten stack, then the remainings go to a different spot, or are dropped.
 --
--- Returns a function wrapper for `minetest.do_item_eat`.
+-- Returns a function wrapper for `core.do_item_eat`.
 ---@param hp_change number
 ---@param replace_with_item mt.Item|nil
 ---@return fun(itemstack:mt.Item, user:mt.ObjectRef, pointed_thing:mt.PointedThing)
-function minetest.item_eat(hp_change, replace_with_item) end
+function core.item_eat(hp_change, replace_with_item) end
 
 -- Default `on_punch` callback.
 --
--- Calls functions registered by `minetest.register_on_punchnode()`.
+-- Calls functions registered by `core.register_on_punchnode()`.
 ---@param pos mt.Vector
 ---@param node mt.Node
 ---@param puncher mt.ObjectRef
 ---@param pointed_thing mt.PointedThing
-function minetest.node_punch(pos, node, puncher, pointed_thing) end
+function core.node_punch(pos, node, puncher, pointed_thing) end
 
 -- Default `on_dig` callback.
 --
 -- - Checks if node can be dug, puts item into inventory, removes node.
--- - Calls functions registered by `minetest.registered_on_dignodes()`.
+-- - Calls functions registered by `core.registered_on_dignodes()`.
 ---@param pos mt.Vector
 ---@param node mt.Node
 ---@param digger mt.ObjectRef
-function minetest.node_dig(pos, node, digger) end
+function core.node_dig(pos, node, digger) end

@@ -2,7 +2,7 @@
 ---Crafting recipes
 -------------------
 
--- Used by `minetest.register_craft`.
+-- Used by `core.register_craft`.
 ---@alias mt.CraftRecipe mt.CraftRecipeRepair|mt.CraftRecipeFuel|mt.CraftRecipeShaped|mt.CraftRecipeCooking|mt.CraftRecipeShapeless
 
 ---@class mt.CraftRecipeShaped
