@@ -1,0 +1,26 @@
+---@meta
+---Privilege definition
+-----------------------
+
+-- Used by `core.register_privilege`.
+-- Whether to grant the privilege to singleplayer.
+-- Whether to grant the privilege to the server admin.
+-- Uses value of `give_to_singleplayer` by default.
+-- Called when given to player `name` by `granter_name`.
+-- `granter_name` will be nil if the priv was granted by a mod.
+--
+-- * Note that this callback will be called twice if a player is
+--   responsible, once with the player name, and then with a nil player name.
+-- * Return true here to stop `register_on_priv_grant` or `revoke` being called.
+-- Called when taken from player `name` by `revoker_name`.
+-- `revoker_name` will be nil if the priv was revoked by a mod.
+--
+-- * Note that this callback will be called twice if a player is
+--   responsible, once with the player name, and then with a nil player name.
+-- * Return true here to stop `register_on_priv_grant` or `revoke` being called.
+---@class mt.PrivDef
+---@field description string|nil Privilege description.
+---@field give_to_singleplayer boolean|nil
+---@field give_to_admin boolean|nil
+---@field on_grant nil|fun(name:string, granter_name:string|nil):boolean|nil
+---@field on_revoke nil|fun(name:string, revoker_name:string|nil):boolean|nil
