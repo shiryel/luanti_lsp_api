@@ -128,6 +128,9 @@ defmodule ExtractTemplate do
         "---@" <> _ = line, [%{params: params} = prev_acc | rest_acc] ->
           [%{prev_acc | params: params ++ [line]} | rest_acc]
 
+        "---|" <> _ = line, [%{params: params} = prev_acc | rest_acc] ->
+          [%{prev_acc | params: params ++ [line]} | rest_acc]
+
         "-" <> _ = line, [%{docs: docs} = prev_acc | rest_acc] ->
           [%{prev_acc | docs: docs ++ [line]} | rest_acc]
 
@@ -144,14 +147,14 @@ defmodule ExtractTemplate do
 end
 
 defmodule Utils do
-  def generate_files_for_path(extracted_docs, path) do
-    File.ls!("./template/#{path}")
+  def generate_files_for_path(extracted_docs, from, to) do
+    File.ls!("#{from}")
     |> Enum.filter(&String.ends_with?(&1, ".lua"))
     |> Enum.map(fn name ->
-      ExtractTemplate.run("./template/#{path}/#{name}")
+      ExtractTemplate.run("#{from}/#{name}")
       |> Enum.reverse()
       |> Enum.map(&Utils.gen_function_metadata/1)
-      |> generate_file(extracted_docs, "./results/#{path}/#{name}")
+      |> generate_file(extracted_docs, "#{to}/#{name}")
     end)
     |> List.flatten()
   end
@@ -249,9 +252,7 @@ IO.puts("---------------------")
 IO.puts("Generating results...")
 IO.puts("---------------------")
 
-Utils.generate_files_for_path(extracted_docs, "core")
-Utils.generate_files_for_path(extracted_docs, "classes")
-Utils.generate_files_for_path(extracted_docs, "definitions")
+Utils.generate_files_for_path(extracted_docs, "./core_template/", "./core")
 
 #
 # Check which docs are missing of the templates
@@ -262,10 +263,10 @@ IO.puts("Searching for functions not on templates...")
 IO.puts("-------------------------------------------")
 
 template_data =
-  File.ls!("./template/core")
+  File.ls!("./core_template")
   |> Enum.filter(&String.ends_with?(&1, ".lua"))
   |> Enum.map(fn name ->
-    ExtractTemplate.run("./template/core/#{name}")
+    ExtractTemplate.run("./core_template/#{name}")
     |> Enum.reverse()
     |> Enum.map(&Utils.gen_function_metadata/1)
   end)

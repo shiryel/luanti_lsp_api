@@ -1,0 +1,547 @@
+---@meta
+
+--- Nodes are the bulk data of the world: cubes and other things that take the
+--- space of a cube. Huge amounts of them are handled efficiently, but they
+--- are quite static.
+--- 
+--- The definition of a node is stored and can be accessed by using
+--- 
+--- ```lua
+--- core.registered_nodes[node.name]
+--- ```
+--- 
+--- See [Registered definitions].
+--- 
+--- Nodes are passed by value between Lua and the engine.
+--- They are represented by a table:
+--- 
+--- ```lua
+--- {name="name", param1=num, param2=num}
+--- ```
+---@class mt.Node
+---@field name string
+---@field param1 mt.NodeParam?
+---@field param2 mt.NodeParam?
+
+
+---@class mt.MapNode:mt.Node
+--- (alias `param1`): the probability of this node being placed (default: 255)
+---* A probability value of `0` or `1` means that node will never appear
+---  (0% chance).
+---* A probability value of `254` or `255` means the node will always appear
+---  (100% chance).
+---* If the probability value `p` is greater than `1`, then there is a
+---  `(p / 256 * 100)` percent chance that node will appear when the schematic is
+---  placed on the map.
+---@field prob integer?
+--- boolean representing if the node should forcibly overwrite
+--- any previous contents (default: false)
+---@field force_place boolean?
+
+
+--- Used by `core.register_node`.
+---@class mt.NodeDef:mt.ItemDef
+---@field drawtype mt.DrawType?
+--- Supported for drawtypes "plantlike", "signlike", "torchlike",
+--- "firelike", "mesh", "nodebox", "allfaces".
+--- For plantlike and firelike, the image will start at the bottom of the
+--- node. For torchlike, the image will start at the surface to which the
+--- node "attaches". For the other drawtypes the image will be centered
+--- on the node.
+---@field visual_scale number?
+--- Textures of node; +Y, -Y, +X, -X, +Z, -Z
+--- List can be shortened to needed length.
+---@field tiles mt.TileDef[]?
+--- Same as `tiles`, but these textures are drawn on top of the base
+--- tiles. You can use this to colorize only specific parts of your
+--- texture. If the texture name is an empty string, that overlay is not
+--- drawn. Since such tiles are drawn twice, it is not recommended to use
+--- overlays on very common nodes.
+---@field overlay_tiles mt.TileDef[]?
+--- Special textures of node; used rarely.
+--- List can be shortened to needed length.
+---@field special_tiles mt.TileDef[]?
+--- The node's original color will be multiplied with this color.
+--- If the node has a palette, then this setting only has an effect in
+--- the inventory and on the wield item.
+---@field color mt.ColorSpec?
+--- Specifies how the texture's alpha channel will be used for rendering.
+--- Possible values:
+--- * "opaque":
+---   Node is rendered opaque regardless of alpha channel.
+--- * "clip":
+---   A given pixel is either fully see-through or opaque
+---   depending on the alpha channel being below/above 50% in value.
+---   Use this for nodes with fully transparent and fully opaque areas.
+--- * "blend":
+---   The alpha channel specifies how transparent a given pixel
+---   of the rendered node is. This comes at a performance cost.
+---   Only use this when correct rendering
+---   among semitransparent nodes is necessary.
+--- The default is "opaque" for drawtypes normal, liquid and flowingliquid,
+--- mesh and nodebox or "clip" otherwise.
+--- If set to a boolean value (deprecated): true either sets it to blend
+--- or clip, false sets it to clip or opaque mode depending on the drawtype.
+---@field use_texture_alpha "opaque"|"clip"|"blend"?
+--- The node's `param2` is used to select a pixel from the image.
+--- Pixels are arranged from left to right and from top to bottom.
+--- The node's color will be multiplied with the selected pixel's color.
+--- Tiles can override this behavior.
+--- Only when `paramtype2` supports palettes.
+---@field palette string?
+--- Screen tint if a player is inside this node, see `ColorSpec`.
+--- Color is alpha-blended over the screen.
+---@field post_effect_color mt.ColorSpec?
+--- Determines whether `post_effect_color` is affected by lighting.
+---@field post_effect_color_shaded boolean?
+---@field paramtype mt.ParamType?
+---@field paramtype2 mt.ParamType2?
+--- Value for param2 that is set when player places node
+---@field place_param2 mt.NodeParam?
+--- If true, place_param2 is nil, and this is a wallmounted node,
+--- this node might use the special 90° rotation when placed
+--- on the floor or ceiling, depending on the direction.
+--- See the explanation about wallmounted for details.
+--- Otherwise, the rotation is always the same on vertical placement.
+---@field wallmounted_rotate_vertical boolean?
+--- If false, the cave generator and dungeon generator will not carve
+--- through this node.
+--- Specifically, this stops mod-added nodes being removed by caves and
+--- dungeons when those generate in a neighbor mapchunk and extend out
+--- beyond the edge of that mapchunk.
+---@field is_ground_content boolean?
+--- If true, sunlight will go infinitely through this node
+---@field sunlight_propagates boolean?
+---@field walkable boolean? If true, objects collide with node
+--- Can be `true` if it is pointable, `false` if it can be pointed through,
+--- or `"blocking"` if it is pointable but not selectable.
+--- Clients older than 5.9.0 interpret `pointable = "blocking"` as `pointable = true`.
+--- Can be overridden by the `pointabilities` of the held item.
+--- A client may be able to point non-pointable nodes, since it isn't checked server-side.
+---@field pointable boolean?
+---@field diggable boolean? If false, can never be dug
+---@field climbable boolean? If true, can be climbed on like a ladder
+---@field move_resistance number?
+--- Slows down movement of players through this node (max. 7).
+--- If this is nil, it will be equal to liquid_viscosity.
+--- Note: If liquid movement physics apply to the node
+--- (see `liquid_move_physics`), the movement speed will also be
+--- affected by the `movement_liquid_*` settings.
+---@field buildable_to boolean? If true, placed nodes can replace this node
+--- If true, liquids flow into and replace this node.
+--- Warning: making a liquid node 'floodable' will cause problems.
+---@field floodable boolean?
+--- If it's "source" or "flowing", then the
+--- `liquid_alternative_*` fields _must_ be specified
+---@field liquidtype
+--- no liquid flowing physics
+---|"none"
+--- spawns flowing liquid nodes at all 4 sides and below;
+--- recommended drawtype: "liquid".
+---|"source"
+--- spawned from source, spawns more flowing liquid nodes
+--- around it until `liquid_range` is reached;
+--- will drain out without a source;
+--- recommended drawtype: "flowingliquid".
+---|"flowing"
+---| nil
+--- These fields may contain node names that represent the
+--- flowing version (`liquid_alternative_flowing`) and
+--- source version (`liquid_alternative_source`) of a liquid.
+---
+--- Specifically, these fields are required if `liquidtype ~= "none"` or
+--- `drawtype == "flowingliquid"`.
+---
+--- Liquids consist of up to two nodes: source and flowing.
+---
+--- There are two ways to define a liquid:
+--- 1) Source node and flowing node. This requires both fields to be
+---    specified for both nodes.
+--- 2) Standalone source node (cannot flow). `liquid_alternative_source`
+---    must be specified and `liquid_range` must be set to 0.
+---
+--- Example:
+---     liquid_alternative_flowing = "example:water_flowing",
+---     liquid_alternative_source = "example:water_source",
+---@field liquid_alternative_flowing string?
+--- These fields may contain node names that represent the
+--- flowing version (`liquid_alternative_flowing`) and
+--- source version (`liquid_alternative_source`) of a liquid.
+---
+--- Specifically, these fields are required if `liquidtype ~= "none"` or
+--- `drawtype == "flowingliquid"`.
+---
+--- Liquids consist of up to two nodes: source and flowing.
+---
+--- There are two ways to define a liquid:
+--- 1) Source node and flowing node. This requires both fields to be
+---    specified for both nodes.
+--- 2) Standalone source node (cannot flow). `liquid_alternative_source`
+---    must be specified and `liquid_range` must be set to 0.
+---
+--- Example:
+---     liquid_alternative_flowing = "example:water_flowing",
+---     liquid_alternative_source = "example:water_source",
+---@field liquid_alternative_source string?
+--- Controls speed at which the liquid spreads/flows (max. 7).
+--- 0 is fastest, 7 is slowest.
+--- By default, this also slows down movement of players inside the node
+--- (can be overridden using `move_resistance`)
+---@field liquid_viscosity number?
+--- If true, a new liquid source can be created by placing two or more
+--- sources nearby
+---@field liquid_renewable boolean?
+--- specifies movement physics if inside node
+--- * false: No liquid movement physics apply.
+--- * true: Enables liquid movement physics. Enables things like
+---   ability to "swim" up/down, sinking slowly if not moving,
+---   smoother speed change when falling into, etc. The `movement_liquid_*`
+---   settings apply.
+--- * nil: Will be treated as true if `liquidtype ~= "none"`
+---   and as false otherwise.
+---@field liquid_move_physics boolean?
+--- unclear meaning, the engine sets this to true for 'air' and 'ignore'
+--- deprecated.
+---@field air_equivalent boolean?
+--- Only valid for "nodebox" drawtype with 'type = "leveled"'.
+--- Allows defining the nodebox height without using param2.
+--- The nodebox height is 'leveled' / 64 nodes.
+--- The maximum value of 'leveled' is `leveled_max`.
+---@field leveled number?
+--- Maximum value for `leveled` (0-127), enforced in
+--- `core.set_node_level` and `core.add_node_level`.
+--- Values above 124 might causes collision detection issues.
+---@field leveled_max number?
+--- Maximum distance that flowing liquid nodes can spread around
+--- source on flat land;
+--- maximum = 8; set to 0 to disable liquid flow
+---@field liquid_range number?
+--- Player will take this amount of damage if no bubbles are left
+---@field drowning number?
+--- If player is inside node, this damage is caused
+---@field damage_per_second number?
+---@field node_box mt.NodeBox?
+--- Used for nodebox nodes with the type == "connected".
+--- Specifies to what neighboring nodes connections will be drawn.
+--- e.g. `{"group:fence", "default:wood"}` or `"default:stone"`
+---@field connects_to string[]?
+--- Tells connected nodebox nodes to connect only to these sides of this
+--- node. possible: "top", "bottom", "front", "left", "back", "right"
+---@field connect_sides string[]?
+--- File name of mesh when using "mesh" drawtype
+---@field mesh string?
+--- Custom selection box definition. Multiple boxes can be defined.
+--- If "nodebox" drawtype is used and selection_box is nil, then node_box
+--- definition is used for the selection box.
+---@field selection_box mt.NodeBox?
+---@field collision_box mt.NodeBox?
+--- Support maps made in and before January 2012
+---@field legacy_facedir_simple boolean?
+--- Support maps made in and before January 2012
+---@field legacy_wallmounted boolean?
+--- Valid for drawtypes:
+--- mesh, nodebox, plantlike, allfaces_optional, liquid, flowingliquid.
+--- 1 - wave node like plants (node top moves side-to-side, bottom is fixed)
+--- 2 - wave node like leaves (whole node moves side-to-side)
+--- 3 - wave node like liquids (whole node moves up and down)
+--- Not all models will properly wave.
+--- plantlike drawtype can only wave like plants.
+--- allfaces_optional drawtype can only wave like leaves.
+--- liquid, flowingliquid drawtypes can only wave like liquids.
+---@field waving number?
+---@field sounds mt.NodeSoundsDef?
+--- Name of dropped item when dug.
+--- Default dropped item is the node itself.
+--- Using a table allows multiple items, drop chances and item filtering
+---@field drop string|mt.NodeDropDef?
+---@field mod_origin string?
+
+
+--- Definition of node sounds to be played at various events.
+--- All fields in this table are optional.
+---@class mt.NodeSoundsDef
+--- If walkable, played when object walks on it. If node is
+--- climbable or a liquid, played when object moves through it.
+--- Sound is played at the base of the object's collision-box.
+--- Gain is multiplied by `0.6`.
+--- For local player, it's played position-less, with normal gain.
+---@field footstep mt.SimpleSoundSpec?
+--- While digging node.
+--- If `"__group"`, then the sound will be
+--- `{name = "default_dig_<groupname>", gain = 0.5}` , where `<groupname>` is the
+--- name of the item's digging group with the fastest digging time.
+--- In case of a tie, one of the sounds will be played (but we
+--- cannot predict which one)
+--- Default value: `"__group"`
+---@field dig mt.SimpleSoundSpec|"__group"?
+--- Node was dug
+---@field dug mt.SimpleSoundSpec?
+--- Node was placed. Also played after falling
+---@field place mt.SimpleSoundSpec?
+--- When node placement failed.
+--- Note: This happens if the _built-in_ node placement failed.
+--- This sound will still be played if the node is placed in the
+--- `on_place` callback manually.
+---@field place_failed mt.SimpleSoundSpec?
+--- When node starts to fall or is detached
+---@field fall mt.SimpleSoundSpec?
+
+---@class mt.NodeDropDef
+--- Maximum number of item lists to drop.
+--- The entries in 'items' are processed in order. For each:
+--- Item filtering is applied, chance of drop is applied, if both are
+--- successful the entire item list is dropped.
+--- Entry processing continues until the number of dropped item lists
+--- equals 'max_items'.
+--- Therefore, entries should progress from low to high drop chance.
+---@field max_items integer?
+---@field items mt.NodeDropItemsDef
+
+
+---@class mt.NodeDropItemsDef
+--- 1 in 1000 chance of dropping a diamond.
+--- Default rarity is '1'.
+---@field rarity integer?
+---@field items mt.ItemString[]?
+---@field tools mt.ItemString[]?
+--- Only drop if using an item in the "magicwand" group, or
+--- an item that is in both the "pickaxe" and the "lucky"
+--- groups.
+--- ```lua
+--- tool_groups = {
+---   "magicwand",
+---   {"pickaxe", "lucky"}
+--- }
+--- ```
+---@field tool_groups (string|string[])[]?
+--- Whether all items in the dropped item list inherit the
+--- hardware coloring palette color from the dug node.
+--- Default is 'false'.
+---@field inherit_color boolean?
+
+
+---@class mt.NodeDef
+node = {}
+
+--- Node constructor; called after adding node.
+--- Can set up metadata and stuff like that.
+--- Not called for bulk node placement (i.e. schematics and VoxelManip).
+--- Note: Within an on_construct callback, core.set_node can cause an
+--- infinite loop if it invokes the same callback.
+--- *Consider using core.swap_node instead.*
+--- default: nil
+---@param pos mt.Vector
+function node:on_construct(pos) end
+
+--- Node destructor; called before removing node.
+--- Not called for bulk node placement.
+--- default: nil
+---@param pos mt.Vector
+function node.on_destruct(pos) end
+
+--- Node destructor; called after removing node.
+--- Not called for bulk node placement.
+--- default: nil
+---@param pos mt.Vector
+---@param oldnode mt.Node
+function node.after_destruct(pos, oldnode) end
+
+--- Called when a liquid (newnode) is about to flood oldnode, if it has
+--- `floodable = true` in the nodedef. Not called for bulk node placement
+--- (i.e. schematics and VoxelManip) or air nodes. If return true the
+--- node is not flooded, but on_flood callback will most likely be called
+--- over and over again every liquid update interval.
+--- Default: nil
+--- Warning: making a liquid node 'floodable' will cause problems.
+---@param pos mt.Vector
+---@param oldnode mt.Node
+---@param newnode mt.Node
+function node.on_flood(pos, oldnode, newnode) end
+
+--- Called when `oldnode` is about be converted to an item, but before the
+--- node is deleted from the world or the drops are added. This is
+--- generally the result of either the node being dug or an attached node
+--- becoming detached.
+--- * `pos`: node position
+--- * `oldnode`: node table of node before it was deleted
+--- * `oldmeta`: metadata of node before it was deleted, as a metadata table
+--- * `drops`: a table of `ItemStack`s, so any metadata to be preserved can
+---   be added directly to one or more of the dropped items. See
+---   "ItemStackMetaRef".
+--- default: `nil`
+---@param pos mt.Vector
+---@param oldnode mt.Node Node table of node before it was deleted.
+---@param oldmeta mt.NodeMetaRef Metadata of node before it was deleted, as a metadata table.
+---@param drops table<unknown, mt.Item>
+function node.preserve_metadata(pos, oldnode, oldmeta, drops) end
+
+--- Called after constructing node when node was placed using
+--- core.item_place_node / core.place_node.
+--- If return true no item is taken from itemstack.
+--- `placer` may be any valid ObjectRef or nil.
+--- default: nil
+---@param pos mt.Vector Node position.
+---@param placer mt.ObjectRef|nil 
+---@param itemstack mt.Item
+---@param pointed_thing mt.PointedThing
+function node.after_place_node(pos, placer, itemstack, pointed_thing) end
+
+--- Called after destructing the node when node was dug using
+--- `core.node_dig` / `core.dig_node`.
+--- * `pos`: node position
+--- * `oldnode`: node table of node before it was dug
+--- * `oldmetadata`: metadata of node before it was dug,
+---                  as a metadata table
+--- * `digger`: ObjectRef of digger
+--- default: nil
+---@param pos mt.Vector
+---@param oldnode mt.Node Node table of node before it was dug.
+---@param oldmetadata table Metadata of node before it was dug, as a metadata table.
+---@param digger mt.ObjectRef
+function node.after_dig_node(pos, oldnode, oldmetadata, digger) end
+
+--- Returns true if node can be dug, or false if not.
+--- default: nil
+---@param pos mt.Vector
+---@param player mt.ObjectRef
+---@return boolean
+function node.can_dig(pos, player) end
+
+--- default: core.node_punch
+--- Called when puncher (an ObjectRef) punches the node at pos.
+--- By default calls core.register_on_punchnode callbacks.
+---@param pos mt.Vector
+---@param node mt.Node
+---@param puncher mt.ObjectRef
+---@param pointed_thing mt.PointedThing
+function node.on_punch(pos, node, puncher, pointed_thing) end
+
+--- default: nil
+--- Called when clicker (an ObjectRef) used the 'place/build' key
+--- (not necessarily an actual rightclick)
+--- while pointing at the node at pos with 'node' being the node table.
+--- itemstack will hold clicker's wielded item.
+--- Shall return the leftover itemstack.
+--- Note: pointed_thing can be nil, if a mod calls this function.
+--- This function does not get triggered by clients <=0.4.16 if the
+--- "formspec" node metadata field is set.
+---@param pos mt.Vector
+---@param node mt.Node
+---@param clicker mt.ObjectRef
+---@param itemstack mt.Item
+---@param pointed_thing mt.PointedThing|nil
+---@return mt.ItemStack|nil leftover
+function node.on_rightclick(pos, node, clicker, itemstack, pointed_thing) end
+
+--- * Default: `core.node_dig`.
+--- * By default checks privileges, wears out item (if tool) and removes node.
+--- * Return `true` if the node was dug successfully, `false` otherwise.
+--- * Deprecated: returning nil is the same as returning true.
+---@param pos mt.Vector
+---@param node mt.Node
+---@param digger mt.ObjectRef
+---@return boolean
+function node.on_dig(pos, node, digger) end
+
+--- default: nil
+--- called by NodeTimers, see core.get_node_timer and NodeTimerRef.
+--- elapsed is the total time passed since the timer was started.
+--- return true to run the timer for another cycle with the same timeout
+--- value.
+---@param pos mt.Vector
+---@param elapsed number The total time passed since the timer was started.
+---@return boolean
+function node.on_timer(pos, elapsed) end
+
+--- fields = {name1 = value1, name2 = value2, ...}
+--- formname should be the empty string; you **must not** use formname.
+--- Called when an UI form (e.g. sign text input) returns data.
+--- See core.register_on_player_receive_fields for more info.
+--- default: nil
+---@param pos mt.Vector
+---@param formname string
+---@param fields table<string, unknown> Name = Value.
+---@param sender mt.ObjectRef
+function node.on_receive_fields(pos, formname, fields, sender) end
+
+--- Called when a player wants to move items inside the inventory.
+--- Return value: number of items allowed to move.
+---@param pos mt.Vector
+---@param from_list unknown
+---@param from_index integer
+---@param to_list unknown
+---@param to_index integer
+---@param count integer
+---@param player mt.ObjectRef
+---@return integer allowed
+function node.allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player) end
+
+--- Called when a player wants to put something into the inventory.
+--- Return value: number of items allowed to put.
+--- Return value -1: Allow and don't modify item count in inventory.
+---@param pos mt.Vector
+---@param listname string
+---@param index integer
+---@param stack mt.Item
+---@param player mt.ObjectRef
+---@return integer allowed
+function node.allow_metadata_inventory_put(pos, listname, index, stack, player) end
+
+--- Called when a player wants to take something out of the inventory.
+--- Return value: number of items allowed to take.
+--- Return value -1: Allow and don't modify item count in inventory.
+---@param pos mt.Vector
+---@param listname string
+---@param index integer
+---@param stack mt.Item
+---@param player mt.ObjectRef
+---@return integer allowed
+function node.allow_metadata_inventory_take(pos, listname, index, stack, player) end
+
+--- Called after the actual action has happened, according to what was allowed.
+---
+--- * No return value.
+--- * Taking items from the inventory.
+--- * The `on_*` callbacks are called after the items have been placed in the inventories.
+--- * This callback triggered `after` the action.
+---@param pos mt.Vector
+---@param from_list unknown
+---@param from_index integer
+---@param to_list unknown
+---@param to_index integer
+---@param count integer
+---@param player mt.ObjectRef
+function node.on_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player) end
+
+--- Called after the actual action has happened, according to what was allowed.
+---
+--- * No return value.
+--- * Taking items from the inventory.
+--- * The `on_*` callbacks are called after the items have been placed in the inventories.
+--- * This callback triggered `after` the action.
+---@param pos mt.Vector
+---@param listname string
+---@param index integer
+---@param stack mt.Item
+---@param player mt.ObjectRef
+function node.on_metadata_inventory_put(pos, listname, index, stack, player) end
+
+--- Called after the actual action has happened, according to what was allowed.
+---
+--- * No return value.
+--- * Taking items from the inventory.
+--- * The `on_*` callbacks are called after the items have been placed in the inventories.
+--- * This callback triggered `after` the action.
+---@param pos mt.Vector
+---@param listname string
+---@param index integer
+---@param stack mt.Item
+---@param player mt.ObjectRef
+function node.on_metadata_inventory_take(pos, listname, index, stack, player) end
+
+--- intensity: 1.0 = mid range of regular TNT.
+--- If defined, called when an explosion touches the node, instead of
+--- removing the node.
+---@param pos mt.Vector
+---@param intensity number 1.0 = mid range of regular TNT.
+function node.on_blast(pos, intensity) end

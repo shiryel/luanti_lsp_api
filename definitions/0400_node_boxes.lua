@@ -1,0 +1,92 @@
+---@meta
+
+---Node selection boxes are defined using "node boxes".
+---
+---A nodebox is defined as any of:
+---
+---    {
+---        -- A normal cube; the default in most things
+---        type = "regular"
+---    }
+---    {
+---        -- A fixed box (or boxes) (facedir param2 is used, if applicable)
+---        type = "fixed",
+---        fixed = box OR {box1, box2, ...}
+---    }
+---    {
+---        -- A variable height box (or boxes) with the top face position defined
+---        -- by the node parameter 'leveled = ', or if 'paramtype2 == "leveled"'
+---        -- by param2.
+---        -- Other faces are defined by 'fixed = {}' as with 'type = "fixed"'.
+---        type = "leveled",
+---        fixed = box OR {box1, box2, ...}
+---    }
+---    {
+---        -- A box like the selection box for torches
+---        -- (wallmounted param2 is used, if applicable)
+---        type = "wallmounted",
+---        wall_top = box,
+---        wall_bottom = box,
+---        wall_side = box
+---    }
+---    {
+---        -- A node that has optional boxes depending on neighboring nodes'
+---        -- presence and type. See also `connects_to`.
+---        type = "connected",
+---        fixed = box OR {box1, box2, ...}
+---        connect_top = box OR {box1, box2, ...}
+---        connect_bottom = box OR {box1, box2, ...}
+---        connect_front = box OR {box1, box2, ...}
+---        connect_left = box OR {box1, box2, ...}
+---        connect_back = box OR {box1, box2, ...}
+---        connect_right = box OR {box1, box2, ...}
+---        -- The following `disconnected_*` boxes are the opposites of the
+---        -- `connect_*` ones above, i.e. when a node has no suitable neighbor
+---        -- on the respective side, the corresponding disconnected box is drawn.
+---        disconnected_top = box OR {box1, box2, ...}
+---        disconnected_bottom = box OR {box1, box2, ...}
+---        disconnected_front = box OR {box1, box2, ...}
+---        disconnected_left = box OR {box1, box2, ...}
+---        disconnected_back = box OR {box1, box2, ...}
+---        disconnected_right = box OR {box1, box2, ...}
+---        disconnected = box OR {box1, box2, ...} -- when there is *no* neighbor
+---        disconnected_sides = box OR {box1, box2, ...} -- when there are *no*
+---                                                      -- neighbors to the sides
+---    }
+---
+---A `box` is defined as:
+---
+---    {x1, y1, z1, x2, y2, z2}
+---
+---A box of a regular node would look like:
+---
+---    {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+---
+---To avoid collision issues, keep each value within the range of +/- 1.45.
+---This also applies to leveled nodeboxes, where the final height shall not
+---exceed this soft limit.
+---@class mt.NodeBox
+---@field type mt.ParamType2|"regular"|"fixed"|"connected"
+---@field fixed mt.NodeBox|mt.NodeBox[]
+---@field wall_top mt.NodeBox
+---@field wall_bottom mt.NodeBox
+---@field wall_side mt.NodeBox
+---@field connect_top mt.NodeBox|mt.NodeBox[]
+---@field connect_bottom mt.NodeBox|mt.NodeBox[]
+---@field connect_front mt.NodeBox|mt.NodeBox[]
+---@field connect_left mt.NodeBox|mt.NodeBox[]
+---@field connect_back mt.NodeBox|mt.NodeBox[]
+---@field connect_right mt.NodeBox|mt.NodeBox[]
+---@field disconnect_top mt.NodeBox|mt.NodeBox[]
+---@field disconnect_bottom mt.NodeBox|mt.NodeBox[]
+---@field disconnect_front mt.NodeBox|mt.NodeBox[]
+---@field disconnect_left mt.NodeBox|mt.NodeBox[]
+---@field disconnect_back mt.NodeBox|mt.NodeBox[]
+---@field disconnect_right mt.NodeBox|mt.NodeBox[]
+---@field disconnected_sides mt.NodeBox|mt.NodeBox[]
+---@field [1] number x1
+---@field [2] number y1
+---@field [3] number z1
+---@field [4] number x2
+---@field [5] number y2
+---@field [6] number z2

@@ -1,0 +1,76 @@
+---@meta
+
+--- Used by `core.add_particlespawner`.
+---
+--- The particles' properties are random values between the min and max
+--- values.
+--- applies to: pos, velocity, acceleration, expirationtime, size
+--- If `node` is set, min and maxsize can be set to 0 to spawn
+--- randomly-sized particles (just like actual node dig particles).
+---@class mt.ParticleSpawnerDef
+---
+---@field amount number
+--- Number of particles spawned over the time period `time`.
+---@field time number
+--- Lifespan of spawner in seconds.
+--- If time is 0 spawner has infinite lifespan and spawns the `amount` on
+--- a per-second basis.
+---@field collisiondetection boolean?
+--- If true collide with `walkable` nodes and, depending on the
+--- `object_collision` field, objects too.
+---@field collision_removal boolean?
+--- If true particles are removed when they collide.
+--- Requires collisiondetection = true to have any effect.
+---@field object_collision boolean?
+--- If true particles collide with objects that are defined as
+--- `physical = true,` and `collide_with_objects = true,`.
+--- Requires collisiondetection = true to have any effect.
+---@field attached mt.ObjectRef?
+--- If defined, particle positions, velocities and accelerations are
+--- relative to this object's position and yaw
+---@field vertical boolean?
+--- If true face player using y axis only
+---@field texture string?
+--- The texture of the particle
+--- v5.6.0 and later: also supports the table format described in the
+--- following section.
+---@field playername string?
+--- Optional, if specified spawns particles only on the player's client
+---@field animation mt.TileAnimDef?
+--- Optional, specifies how to animate the particles' texture
+--- v5.6.0 and later: set length to -1 to synchronize the length
+--- of the animation with the expiration time of individual particles.
+--- (-2 causes the animation to be played twice, and so on)
+---@field glow number?
+--- Optional, specify particle self-luminescence in darkness.
+--- Values 0-14.
+---@field node mt.Node?
+--- Optional, if specified the particles will have the same appearance as
+--- node dig particles for the given node.
+--- `texture` and `animation` will be ignored if this is set.
+---@field node_tile number?
+--- Optional, only valid in combination with `node`
+--- If set to a valid number 1-6, specifies the tile from which the
+--- particle texture is picked.
+--- Otherwise, the default behavior is used. (currently: any random tile)
+---
+---@field minpos mt.Vector?
+--- LEGACY FIELD
+---@field maxpos mt.Vector?
+--- LEGACY FIELD
+---@field minvel mt.Vector?
+--- LEGACY FIELD
+---@field maxvel mt.Vector?
+--- LEGACY FIELD
+---@field minacc mt.Vector?
+--- LEGACY FIELD
+---@field maxacc mt.Vector?
+--- LEGACY FIELD
+---@field minexptime number
+--- LEGACY FIELD
+---@field maxexptime number?
+--- LEGACY FIELD
+---@field minsize number?
+--- LEGACY FIELD
+---@field maxsize number?
+--- LEGACY FIELD

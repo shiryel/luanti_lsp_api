@@ -1,0 +1,64 @@
+---@meta
+
+--- Item metadata only contains a key-value store.
+--- 
+--- Some of the values in the key-value store are handled specially:
+--- 
+--- - `description`: Set the item stack's description. See also: `get_description`
+---   in [`ItemStack`]
+--- - `short_description`: Set the item stack's short description. See also:
+---   `get_short_description` in [`ItemStack`]
+--- - `inventory_image`: Override inventory_image
+--- - `inventory_overlay`: Override inventory_overlay
+--- - `wield_image`: Override wield_image
+--- - `wield_overlay`: Override wield_overlay
+--- - `wield_scale`: Override wield_scale, use vector.to_string
+--- - `color`: A `ColorString`, which sets the stack's color.
+--- - `palette_index`: If the item has a palette, this is used to get the current
+---   color from the palette.
+--- - `count_meta`: Replace the displayed count with any string.
+--- - `count_alignment`: Set the alignment of the displayed count value. This is an
+---   int value. The lowest 2 bits specify the alignment in x-direction, the 3rd and
+---   4th bit specify the alignment in y-direction: 0 = default, 1 = left / up, 2 =
+---   middle, 3 = right / down The default currently is the same as right/down.
+---   Example: 6 = 2 + 1\*4 = middle,up
+--- 
+--- Example:
+--- 
+--- ```lua
+--- local meta = stack:get_meta()
+--- meta:set_string("key", "value")
+--- print(dump(meta:to_table()))
+--- ```
+--- 
+--- Example manipulations of "description" and expected output behaviors:
+--- 
+--- ```lua
+--- print(ItemStack("default:pick_steel"):get_description()) --> Steel Pickaxe
+--- print(ItemStack("foobar"):get_description()) --> Unknown Item
+--- 
+--- local stack = ItemStack("default:stone")
+--- stack:get_meta():set_string("description", "Custom description\nAnother line")
+--- print(stack:get_description()) --> Custom description\nAnother line
+--- print(stack:get_short_description()) --> Custom description
+--- 
+--- stack:get_meta():set_string("short_description", "Short")
+--- print(stack:get_description()) --> Custom description\nAnother line
+--- print(stack:get_short_description()) --> Short
+--- 
+--- print(ItemStack("mod:item_with_no_desc"):get_description()) --> mod:item_with_no_desc
+--- ```
+---@class mt.ItemStackMetaRef: mt.MetaDataRef
+local ItemStackMetaRef = {}
+
+---Overrides the item's tool capabilities
+---
+---A nil value will clear the override data and restore the original behavior.
+---@param tool_capabilities mt.ToolCaps[]
+function ItemStackMetaRef:set_tool_capabilities(tool_capabilities) end
+
+---Overrides the item's wear bar parameters (see "Wear Bar Color" section)
+---A nil value will clear the override data and restore the original
+---behavior.
+---@param wear_bar_params table[]
+function ItemStackMetaRef:set_wear_bar_params(wear_bar_params) end
